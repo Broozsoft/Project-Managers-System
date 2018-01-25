@@ -1,0 +1,440 @@
+﻿@model pmboard.Models.Schedules
+
+@{
+    ViewBag.Title = "Edit schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <style>
+        .draggable, .draggable2, .draggable3 {
+            padding: 0.5em;
+            float: left;
+            margin: 10px 10px 10px 0;
+        }
+
+        #droppableMonday, #droppableTuesday, #droppableWednesday, #droppableThursday, #droppableFriday {
+            width: 150px;
+            height: 150px;
+            padding: 0.5em;
+            float: left;
+            margin: 10px;
+        }
+
+        .circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .full {
+            background-color: yellow;
+        }
+
+        .am {
+           background: linear-gradient(90deg, yellow 50%, black 50%);
+        }
+
+        .pm {
+            background: linear-gradient(90deg, black 50%, yellow 50%);
+        }
+    </style>
+
+   <script>
+       $(function () {
+
+           $(".draggable").draggable({
+               revert: "valid"
+           });
+
+           $(".draggable2").draggable({
+               revert: "valid"
+           });
+
+           $(".draggable3").draggable({
+               revert: "valid"
+           });
+
+           $("#things").on("click", ".disableButton", function () {
+
+               console.log("dsds");
+               var $element = $(this).parent("div");
+
+               $element.droppable('enable');
+               $element.find("p").html("Drop here");
+               $element.removeClass('ui-state-highlight');
+               if ($element.hasClass('status-full')) {
+                   $element.removeClass("status-full");
+               }
+               else if ($element.hasClass('status-am')) {
+                   $element.removeClass("status-am");
+               }
+               else if ($element.hasClass('status-pm')) {
+                   $element.removeClass("status-pm");
+               }
+               
+               $element.removeClass('dropped');
+
+               $(this).remove();
+           });
+
+           function addStatus(ui, day) {
+               if (ui.draggable.hasClass("draggable")) {
+                   day.addClass('status-full');
+
+                   if (!day.hasClass("ui-droppable-disabled")) {
+                       day.append('<div class="full circle disableButton"></div>');
+                   }
+               }
+               else if (ui.draggable.hasClass("draggable2")) {
+                   day.addClass('status-am');
+
+                   if (!day.hasClass("ui-droppable-disabled")) {
+                       day.append('<div class="am circle disableButton"></div>');
+                   }
+               }
+               else if (ui.draggable.hasClass("draggable3")) {
+                   day.addClass('status-pm');
+
+                   if (!day.hasClass("ui-droppable-disabled")) {
+                       day.append('<div class="pm circle disableButton"></div>');
+                   }
+               }
+           }
+           
+           
+        $( "#droppableMonday").droppable({
+            drop: function (event, ui) {
+            var day = $(this);
+
+            ui.draggable.addClass('dropped');
+            day.addClass('ui-state-highlight');
+
+            addStatus(ui, day);
+
+            ui.draggable.data('droppedin', day);
+            day.find("p").html("Dropped!");
+            day.droppable('disable');
+            }
+        });
+        $("#droppableTuesday").droppable({
+           drop: function (event, ui) {
+               var day = $(this);
+
+               ui.draggable.addClass('dropped');
+               day.addClass('ui-state-highlight');
+
+               addStatus(ui, day);
+
+               ui.draggable.data('droppedin', day);
+               day.find("p").html("Dropped!");
+               day.droppable('disable');
+           }
+        });
+        $("#droppableWednesday").droppable({
+           drop: function (event, ui) {
+               var day = $(this);
+
+               ui.draggable.addClass('dropped');
+               day.addClass('ui-state-highlight');
+
+               addStatus(ui, day);
+
+               ui.draggable.data('droppedin', day);
+               day.find("p").html("Dropped!");
+               day.droppable('disable');
+           }
+        });
+        $("#droppableThursday").droppable({
+           drop: function (event, ui) {
+               var day = $(this);
+
+               ui.draggable.addClass('dropped');
+               day.addClass('ui-state-highlight');
+
+               addStatus(ui, day);
+
+               ui.draggable.data('droppedin', day);
+               day.find("p").html("Dropped!");
+               day.droppable('disable');
+           }
+        });
+        $("#droppableFriday").droppable({
+           drop: function (event, ui) {
+               var day = $(this);
+
+               ui.draggable.addClass('dropped');
+               day.addClass('ui-state-highlight');
+
+               addStatus(ui, day);
+
+               ui.draggable.data('droppedin', day);
+               day.find("p").html("Dropped!");
+               day.droppable('disable');
+           }
+        });
+
+        $("body").droppable();
+
+        function setStatus(day) {
+           if (day.hasClass('status-full')) {
+               return "full"
+           }
+           else if (day.hasClass('status-am')) {
+               return "am"
+           }
+           else if (day.hasClass('status-pm')) {
+               return "pm"
+           }
+           else {
+               return "available"
+           }
+        }
+
+        $('#submitButton').on('click', function () {
+            var projectManagerId = $("#pmanagerId").val();
+            var monday = setStatus($('#droppableMonday'));
+            var tuesday = setStatus($('#droppableTuesday'));
+            var wednesday = setStatus($('#droppableWednesday'));
+            var thursday = setStatus($('#droppableThursday'));
+            var friday = setStatus($('#droppableFriday'));
+
+            $.ajax({
+                
+                type: "POST",
+                url: "/Schedule/UpdateStatus",
+                data: {
+                    pmId: projectManagerId,
+                    mon: monday,
+                    tues: tuesday,
+                    wed: wednesday,
+                    thurs: thursday,
+                    fri: friday
+                },
+                success: function (result) {
+
+                    alert("Status updated");
+
+                }
+
+            })
+        })
+  } );
+  </script>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ProjectmanagerId)
+
+        <input type="hidden" id="pmanagerId" value="@Model.ProjectmanagerId"/>
+
+        <h4>Schedules - Edit Availability</h4>
+        <hr />
+        <p>If left empty they will default to available</p>
+
+        <div class="container">
+            <div id="things" class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Monday, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <br />
+                    @if (Model.Monday == "full")
+                    {
+                        <div id="droppableMonday" class="ui-widget-header ui-droppable ui-state-highlight status-full ui-droppable-disabled">
+                            <p class="monday">Dropped!</p>
+                            <div class="full circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Monday == "am")
+                    {
+                        <div id="droppableMonday" class="ui-widget-header ui-droppable ui-state-highlight status-am ui-droppable-disabled">
+                            <p class="monday">Dropped!</p>
+                            <div class="am circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Monday == "pm")
+                    {
+                        <div id="droppableMonday" class="ui-widget-header ui-droppable ui-state-highlight status-pm ui-droppable-disabled">
+                            <p class="monday">Dropped!</p>
+                            <div class="pm circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="droppableMonday" class="ui-widget-header">
+                            <p class="monday">Drop here</p>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Tuesday, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <br />
+                    @if (Model.Tuesday == "full")
+                    {
+                        <div id="droppableTuesday" class="ui-widget-header ui-droppable ui-state-highlight status-full ui-droppable-disable">
+                            <p class="tuesday">Dropped</p>
+                            <div class="full circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Tuesday == "am")
+                    {
+                        <div id="droppableTuesday" class="ui-widget-header ui-droppable ui-state-highlight status-am ui-droppable-disable">
+                            <p class="tuesday">Dropped</p>
+                            <div class="am circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Tuesday == "pm")
+                    {
+                        <div id="droppableTuesday" class="ui-widget-header ui-droppable ui-state-highlight status-pm ui-droppable-disable">
+                            <p class="tuesday">Dropped</p>
+                            <div class="pm circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="droppableTuesday" class="ui-widget-header">
+                            <p class="tuesday">Drop here</p>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Wednesday, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <br />
+                    @if (Model.Wednesday == "full")
+                    {
+                        <div id="droppableWednesday" class="ui-widget-header ui-droppable ui-state-highlight status-full ui-droppable-disable">
+                            <p class="wednesday">Dropped</p>
+                            <div class="full circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Wednesday == "am")
+                    {
+                        <div id="droppableWednesday" class="ui-widget-header ui-droppable ui-state-highlight status-am ui-droppable-disable">
+                            <p class="wednesday">Dropped</p>
+                            <div class="am circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Wednesday == "pm")
+                    {
+                        <div id="droppableWednesday" class="ui-widget-header ui-droppable ui-state-highlight status-pm ui-droppable-disable">
+                            <p class="wednesday">Dropped</p>
+                            <div class="pm circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="droppableWednesday" class="ui-widget-header">
+                            <p class="wednesday">Drop here</p>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Thursday, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <br />
+                    @if (Model.Thursday == "full")
+                    {
+                        <div id="droppableThursday" class="ui-widget-header ui-droppable ui-state-highlight status-full ui-droppable-disable">
+                            <p class="thursday">Dropped</p>
+                            <div class="full circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Thursday == "am")
+                    {
+                        <div id="droppableThursday" class="ui-widget-header ui-droppable ui-state-highlight status-am ui-droppable-disable">
+                            <p class="thursday">Dropped</p>
+                            <div class="am circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Thursday == "pm")
+                    {
+                        <div id="droppableThursday" class="ui-widget-header ui-droppable ui-state-highlight status-pm ui-droppable-disable">
+                            <p class="thursday">Dropped</p>
+                            <div class="pm circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="droppableThursday" class="ui-widget-header">
+                            <p class="thursday">Drop here</p>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Friday, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <br />
+                    @if (Model.Friday == "full")
+                    {
+                        <div id="droppableFriday" class="ui-widget-header ui-droppable ui-state-highlight status-full ui-droppable-disable">
+                            <p class="friday">Dropped</p>
+                            <div class="full circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Friday == "am")
+                    {
+                        <div id="droppableFriday" class="ui-widget-header ui-droppable ui-state-highlight status-am ui-droppable-disable">
+                            <p class="friday">Dropped</p>
+                            <div class="am circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Friday == "pm")
+                    {
+                        <div id="droppableFriday" class="ui-widget-header ui-droppable ui-state-highlight status-pm ui-droppable-disable">
+                            <p class="friday">Dropped</p>
+                            <div class="pm circle disableButton">
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="droppableFriday" class="ui-widget-header">
+                            <p class="Friday">Drop here</p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <hr />
+            <br />
+            <div id="button-container" class="row">
+                <div class="ui-widget-content draggable full circle"></div>
+                <div class="ui-widget-content draggable2 am circle"></div>
+                <div class="ui-widget-content draggable3 pm circle"></div>
+            </div>
+          </div>
+           
+
+    
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input id="submitButton" type="button" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>

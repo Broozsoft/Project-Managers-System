@@ -1,0 +1,182 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+
+
+/* Set padding to keep content from hitting the edges */
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+
+tr > th, tr > td {
+    border: 1px solid black;
+    min-width: 50px;
+    text-align: center;
+}
+#projectName {
+    min-width: 100px;
+}
+
+#Comment {
+    min-width: 200px;
+}
+
+
+th {
+    background-color: #95b4c2;
+}
+
+
+
+/*status things...*/
+.green-pointer {
+    background: #81c784;
+}
+
+.yellow-pointer {
+    background: #fdd835;
+}
+
+.red-pointer {
+    background: #ff5252;
+}
+
+.status-circle {
+    border-radius: 90px;
+}
+
+.tooltipp {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    cursor: pointer;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s linear;
+    width: 90px;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    margin-top: -50px;
+    margin-left: -10px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.status:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 25px;
+    float: left;
+    position: relative;
+    border: 1px solid black;
+    cursor: pointer;
+    box-shadow: none 2px 70px black;
+}
+
+.color-circle:hover {
+    box-shadow: none 2px 70px white;
+}
+
+/*Drag and drop below*/
+.draggable, .draggable2, .draggable3, .draggable4 {
+    padding: 0.5em;
+    margin: 10px 10px 10px 0;
+    cursor: pointer;
+}
+
+.disableButton {
+    cursor: pointer;
+}
+
+#droppableMonday, #droppableTuesday, #droppableWednesday, #droppableThursday, #droppableFriday {
+    width: 150px;
+    height: 150px;
+    padding: 0.5em;
+    float: left;
+    margin: 10px;
+}
+
+
+#schedule-table {
+    width: 100%;
+}
+
+.project-dragcell {
+    height: 50px;
+}
+
+.dragcell {
+    height: 70px;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.full {
+    background-color: #fdd835;
+}
+
+.am {
+    background: linear-gradient(90deg, #fdd835 50%, black 50%);
+}
+
+.pm {
+    background: linear-gradient(90deg, black 50%, #fdd835 50%);
+}
+
+.prog {
+    background-color: black;
+}
+
+/*Angular fade-in animations*/
+
+.fade-in {
+  -webkit-transition: 2s linear all;
+  -moz-transition: 2s linear all;
+  -o-transition: 2s linear all;
+  transition: 2s linear all;
+}
+.fade-in.ng-enter {
+  opacity: 0;
+}
+.fade-in.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+.fade-in.ng-leave {
+  opacity: 1;
+}
+.fade-in.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}

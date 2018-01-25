@@ -1,0 +1,54 @@
+﻿@model IEnumerable<pmboard.Models.Categories>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>List of all categories</h2>
+
+<p>
+    @Html.ActionLink("Add New", "Create")
+</p>
+      <!-- Example DataTables Card-->
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> List of all Categories
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Setting</th>
+
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>setting</th>
+
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                          
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

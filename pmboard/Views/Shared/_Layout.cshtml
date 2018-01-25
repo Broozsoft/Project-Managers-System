@@ -1,0 +1,177 @@
+﻿@using pmboard.Helpers;
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>PM Board System</title>
+    <!-- Bootstrap core CSS-->
+    @Styles.Render("~/Content/GuiCss")
+    @Styles.Render("~/Content/jQUIcss")
+ 
+
+
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <a class="navbar-brand" href="@Url.Action("Index", "Gui")">PM Board Admin Section</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                <li class="nav-item @(Html.Controller() == "Gui" ? "active" : "" )" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <a class="nav-link" href="@Url.Action("Index", "Gui")">
+                        <i class="fa fa-fw fa-dashboard"></i>
+                        <span class="nav-link-text">
+                            GUI
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item @(Html.Controller() == "Categories" && Html.Action()=="" ? "active" : "" )" data-toggle="tooltip" data-placement="right" title="Components">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCategories" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-wrench"></i>
+                        <span class="nav-link-text">Categories</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse @(Html.Controller()=="Categories" && Html.Action()!="" ? "show" : "" ) " id="collapseCategories">
+                        <li class="@(Html.Controller()=="Categories" && Html.Action() == "Create" ? "active" : "" )">
+                            <a href="@Url.Action("Create","Categories")">Add New</a>
+                        </li>
+                        <li class="@( Html.Controller()=="Categories" && Html.Action() == "Index" ? "active" : "" )">
+                            <a href="@Url.Action("Index","Categories")">Manage</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item @(Html.Controller() == "GateKeepers" && Html.Action()=="" ? "active" : "" ) " data-toggle="tooltip" data-placement="right" title="Components">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseGateKeepers" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-wrench"></i>
+                        <span class="nav-link-text">Gate Keepers</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse @(Html.Controller()=="GateKeepers" && Html.Action()!="" ? "show" : "" ) " id="collapseGateKeepers">
+                        <li class="@(Html.Controller() == "GateKeepers" && Html.Action()=="Create" ? "active" : "" )">
+                            <a href="@Url.Action("Create","GateKeepers")">Add New</a>
+                        </li>
+                        <li class="@(Html.Controller() == "GateKeepers" && Html.Action()=="Index" ? "active" : "" )">
+                            <a href="@Url.Action("Index","GateKeepers")">Manage</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseProjects" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-wrench"></i>
+                        <span class="nav-link-text">Project</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseProjects">
+                        <li>
+                            <a href="@Url.Action("Index","Projects")">Show Project</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create","Projects")">Create Project</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("UpdatePointer","Projects")">Update Pointer</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+                    <a class="nav-link" href="@Url.Action("ListProjectmanagers", "Projectmanager")">
+                        <i class="fa fa-fw fa-wrench"></i>
+                        <span class="nav-link-text">Project Managers</span>
+                    </a>
+
+                </li>
+
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+                    <a class="nav-link" href="@Url.Action("Index", "Schedule")">
+                        <i class="fa fa-fw fa-wrench"></i>
+                        <span class="nav-link-text">Schedules</span>
+                    </a>
+
+                </li>
+            </ul>
+            <ul class="navbar-nav sidenav-toggler">
+                <li class="nav-item">
+                    <a class="nav-link text-center" id="sidenavToggler">
+                        <i class="fa fa-fw fa-angle-left"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @{var projectManager = Session["ProjectManager"] as pmboard.Models.Projectmanagers;}
+                <li class="nav-item .set-user ">
+                    <a class="nav-link" data-toggle="modal" data-target="#ChangeUserModel">
+                        <i class="fa fa-fw fa-sign-out"></i>@(Session["ProjectManager"] != null ? projectManager.Name : "Set User")
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="content-wrapper">
+        <div class="container-fluid" style="overflow:scroll">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index","Gui")">Dashboard</a>
+                </li>
+
+                <li class="breadcrumb-item @(Html.Action()=="Index" ? "active" : "")">
+                    @if (Html.Action() == "Index")
+                    {
+                        @Html.Controller()
+                    }
+                    else
+                    {
+                        string controller = Html.Controller();
+                        string action = Html.Action();
+                        <a href="@Url.Action("Index", ""+controller+"/")">@Html.Controller()</a>
+                        
+                    }
+                </li>
+
+                @if (Html.Action() != "Index")
+                {
+                    <li class="breadcrumb-item active">
+                        @Html.Action()
+                    </li>
+                }
+            </ol>
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/GuiScripts")
+            @Scripts.Render("~/bundles/jQUIscripts")
+            @RenderBody()
+        </div>
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <footer class="sticky-footer">
+            <div class="container">
+                <div class="text-center">
+                    <small>Copyright © Siemens</small>
+                </div>
+            </div>
+        </footer>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- Logout Modal-->
+        @Html.Action("ChangeUserModal", "Gui");
+        <!-- Bootstrap core JavaScript-->
+        
+
+        <script src="~/Scripts/updatePointer.js"></script>
+        @RenderSection("scripts", required: false)
+ 
+    </div>
+
+</body>
+
+
+</html>

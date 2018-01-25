@@ -1,0 +1,971 @@
+﻿@model pmboard.Models.DashboardViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dashboard_Layout.cshtml";
+}
+
+<div class="container">
+
+    @*This row here is the projects table*@
+    <div class="row">
+        <div class="col-md-8">
+
+            @if (Model.ProjectList.Count() == 0)
+            {
+                <h2>In order to display projects you need to have a project to display in the first place.</h2>
+                <p>@Html.ActionLink("Click here to add a project.", "Create", "Projects") </p>
+            }
+            else
+            {
+                <table class="table-bordered" style="float:left" id="myDashboardTable">
+                    <tr class="info">
+                        <th>
+                            Categories
+                        </th>
+                        <th id="projectName">
+                            Project Name
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            GateKeeper
+                        </th>
+                        <th>
+                            FS
+                        </th>
+                        <th>
+                            G0
+                        </th>
+                        <th>
+                            RDB
+                        </th>
+                        <th>
+                            G1
+                        </th>
+                        <th>
+                            R2
+                        </th>
+                        <th>
+                            G2
+                        </th>
+                        <th>
+                            R3
+                        </th>
+                        <th>
+                            R4
+                        </th>
+                        <th>
+                            G3
+                        </th>
+                        <th>
+                            R5
+                        </th>
+                        <th>
+                            R7
+                        </th>
+                        <th>
+                            R8
+                        </th>
+                        <th>
+                            G4
+                        </th>
+                        <th>
+                            END
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th id="Comment">
+                            Comment
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.ProjectList)
+                    {
+
+                        <tr>
+                            @if (item.Key.Projects.Any(i => i.IsDeleted == false))
+                            {
+                                <td rowspan="@( item.Count() + 1)">
+                                    @Html.Action("CategoryName", item.Key)
+                                </td>
+                            }
+                        </tr>
+
+                        foreach (var moreItems in item)
+                        {
+
+                            if (!moreItems.IsDeleted)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="hidden" id="currentProgress_@moreItems.Id" value="@moreItems.ProgressString" />
+                                        @moreItems.ProjectName
+                                    </td>
+                                    <td>
+                                        @moreItems.Projectmanager.Name
+                                    </td>
+                                    <td>
+                                        @moreItems.GateKeeper.Name
+                                    </td>
+                                    <td id="FS @moreItems.Id" onclick="Edit(@moreItems.Id,'FS')" style="cursor:pointer"  class="@((moreItems.FS != null && moreItems.FS.Value.Date < DateTime.Now.Date) ? "yellow":"") FS project-dragcell">
+                                   
+                                        <a href="#" id="FS_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.FS)</a>
+                                        @{
+
+                                            if (moreItems.ProgressString == "FS")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.FS != null)
+                                            {
+                                                TimeSpan div = moreItems.FS.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+                                            }
+
+                                        }
+                         
+
+</td>
+                                    <td id="G0 @moreItems.Id" onclick="Edit(@moreItems.Id,'G0')" style="cursor:pointer" class="@((moreItems.G0 != null && moreItems.G0.Value.Date < DateTime.Now.Date) ? "yellow":"") G0 project-dragcell">
+                                        <a href="#" id="G0_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.G0)</a>
+
+
+                                       
+                                        @{
+
+                                            if (moreItems.ProgressString == "G0")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.G0 != null)
+                                            {
+                                                TimeSpan div = moreItems.G0.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+                                            }
+
+                                        }
+                                    
+</td>
+                                    <td id="RDB @moreItems.Id" onclick="Edit(@moreItems.Id,'RDB')" style="cursor:pointer" class="@((moreItems.RDB != null && moreItems.RDB.Value.Date < DateTime.Now.Date) ? "yellow":"") RDB project-dragcell">
+                                        <a href="#" id="RDB_@moreItems.Id" >@string.Format("{0:MM/dd}", moreItems.RDB)</a>
+                                        @{
+
+                                            if (moreItems.ProgressString == "RDB")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.RDB != null)
+                                            {
+                                                TimeSpan div = moreItems.RDB.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+                                            }
+
+                                        }
+
+</td>
+                                    <td id="G1 @moreItems.Id" onclick="Edit(@moreItems.Id,'G1')" style="cursor:pointer" class="@((moreItems.G1 != null && moreItems.G1.Value.Date < DateTime.Now.Date) ? "yellow":"") G1 project-dragcell">
+                                        <a href="#" id="G1_@moreItems.Id" >@string.Format("{0:MM/dd}", moreItems.G1)</a>
+                                        @{
+
+                                            if (moreItems.ProgressString == "G1")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.G1 != null)
+                                            {
+                                                TimeSpan div = moreItems.G1.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+                                            }
+
+                                        }
+</td>
+                                    <td id="R2 @moreItems.Id" onclick="Edit(@moreItems.Id,'R2')" style="cursor:pointer" class="@((moreItems.R2 != null && moreItems.R2.Value.Date < DateTime.Now.Date) ? "yellow":"") R2 project-dragcell">
+                                       <a href="#" id="R2_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.R2)</a>
+                                        @{
+
+                                            if (moreItems.ProgressString == "R2")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.R2 != null)
+                                            {
+                                                TimeSpan div = moreItems.R2.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+                                            }
+
+                                        }
+                                    </td>
+                                
+                                    <td id="G2 @moreItems.Id"  style="cursor:pointer" onclick="Edit(@moreItems.Id,'G2')" class="@((moreItems.G2 != null && moreItems.G2.Date < DateTime.Now.Date) ? "yellow":"") G2 project-dragcell">
+
+                                        <a href="#" id="G2_@moreItems.Id">@moreItems.G2.ToString("MM/dd")</a>
+                                        @{
+
+                                            if (moreItems.ProgressString == "G2")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.G2 != null)
+                                            {
+
+                                                TimeSpan div = moreItems.G2.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+                                               
+
+                                            }
+
+                                        }
+
+                                    </td>
+                                    <td id="R3 @moreItems.Id" onclick="Edit(@moreItems.Id,'R3')" style="cursor:pointer" class="@((moreItems.R3 != null && moreItems.R3.Value.Date < DateTime.Now.Date) ? "yellow":"") R3 project-dragcell">
+                                        <a href="#" id="R3_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.R3)</a>
+                                        @{
+
+                                            if (moreItems.ProgressString == "R3")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.R3 != null)
+                                            {
+                                                TimeSpan div = moreItems.R3.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+
+                                            }
+
+                                        }
+                                    </td>
+
+                                    <td id="R4 @moreItems.Id" onclick="Edit(@moreItems.Id,'R4')" style="cursor:pointer" class="@((moreItems.R4 != null && moreItems.R4.Value.Date < DateTime.Now.Date) ? "yellow":"") R4 project-dragcell">
+                                        <a href="#" id="R4_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.R4)</a>
+                                        @{
+
+                                            if (moreItems.ProgressString == "R4")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.R4 != null)
+                                            {
+                                                TimeSpan div = moreItems.R4.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+
+                                            }
+
+                                        }
+</td>
+                                    <td id="G3 @moreItems.Id" onclick="Edit(@moreItems.Id,'G3')" style="cursor:pointer" class="@((moreItems.G3 != null && moreItems.G3.Value.Date < DateTime.Now.Date) ? "yellow":"") G3 project-dragcell">
+                                        <a href="#" id="G3_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.G3)</a>
+                                    @{
+
+                                        if (moreItems.ProgressString == "G3")
+                                        {
+                                            <div class="prog circle"></div>
+                                        }
+
+                                        if (moreItems.G3 != null)
+                                        {
+                                            TimeSpan div = moreItems.G3.Value.Date - DateTime.Now.Date;
+                                            int SpanDate = (int)div.TotalDays;
+                                            if (SpanDate == 0)
+                                            {
+
+                                            }
+                                            else if (SpanDate < 1)
+                                            {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+
+
+                                            }
+
+                                        }
+</td>
+                                    <td id="R5 @moreItems.Id" onclick="Edit(@moreItems.Id,'R5')" style="cursor:pointer" class="@((moreItems.R5 != null && moreItems.R5.Value.Date < DateTime.Now.Date) ? "yellow":"") R5 project-dragcell">
+                                        <a href="#" id="R5_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.R5)</a>
+                               
+ 
+                                        @{
+
+                                            if (moreItems.ProgressString == "R5")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.R5 != null)
+                                            {
+                                                TimeSpan div = moreItems.R5.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+
+                                            }
+
+                                        }
+</td>
+                                    <td id="R7 @moreItems.Id" onclick="Edit(@moreItems.Id,'R7')" style="cursor:pointer" class="@((moreItems.R7 != null && moreItems.R7.Value.Date < DateTime.Now.Date) ? "yellow":"") R7 project-dragcell">
+                                        <a href="#" id="R7_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.R7)</a>
+                                  
+                                        @{
+
+                                            if (moreItems.ProgressString == "R7")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.R7 != null)
+                                            {
+                                                TimeSpan div = moreItems.R7.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+                                            }
+
+                                        }
+</td>
+                                    <td id="R8 @moreItems.Id" onclick="Edit(@moreItems.Id,'R8')" style="cursor:pointer" class="@((moreItems.R8 != null && moreItems.R8.Value.Date < DateTime.Now.Date) ? "yellow":"") R8 project-dragcell">
+                                        <a href="#" id="R8_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.R8)</a>
+                                 
+                                        @{
+
+                                            if (moreItems.ProgressString == "R8")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.R8 != null)
+                                            {
+                                                TimeSpan div = moreItems.R8.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+
+                                            }
+
+                                        }
+</td>
+                                    <td id="G4 @moreItems.Id" onclick="Edit(@moreItems.Id,'G4')"style="cursor:pointer" class="@((moreItems.G4 != null && moreItems.G4.Date < DateTime.Now.Date) ? "yellow":"") G4 project-dragcell">
+                                        <a href="#" id="G4_@moreItems.Id">@moreItems.G4.ToString("MM/dd")</a>
+                                  
+                                        @{
+                                            if (moreItems.ProgressString == "G4")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+
+                                            if (moreItems.G4 != null)
+                                            {
+                                                TimeSpan div = moreItems.G4.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                        <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                    }
+
+
+                                                }
+
+                                            }
+</td>
+                                    <td id="END @moreItems.Id" onclick="Edit(@moreItems.Id,'END')" style="cursor:pointer" class="@((moreItems.END != null && moreItems.END.Value.Date < DateTime.Now.Date) ? "yellow":"") END project-dragcell">
+                                        <a href="#" id="END_@moreItems.Id">@string.Format("{0:MM/dd}", moreItems.END)</a>
+                                        @{
+                                            if (moreItems.ProgressString == "END")
+                                            {
+                                                <div class="prog circle"></div>
+                                            }
+
+                                            if (moreItems.END != null)
+                                            {
+                                                TimeSpan div = moreItems.END.Value.Date - DateTime.Now.Date;
+                                                int SpanDate = (int)div.TotalDays;
+                                                if (SpanDate == 0)
+                                                {
+
+                                                }
+                                                else if (SpanDate < 1)
+                                                {
+                                                    <span class='badge'> @System.Math.Abs(SpanDate)  </span>
+                                                }
+
+                                            }
+
+                                        }
+</td>
+                                    @*Status is meant to change color depending on what the status is entered as in the DB*@
+                                    <td ng-controller="status-thing" ng-style="colorChange('@moreItems.Status')" style="background:@moreItems.Status" class="status fade-in">
+                                        <div class="tooltipp">
+
+                                            <div class="tooltiptext">
+                                                <a onclick="UpdateStatus('#81c784',@moreItems.Id)"> <div class="color-circle green-pointer"></div></a>
+                                                <a onclick="UpdateStatus('#fdd835',@moreItems.Id)"><div class="color-circle yellow-pointer" style="margin-top:-20px"></div></a>
+                                                <a onclick="UpdateStatus('#ff5252',@moreItems.Id)"><div class="color-circle red-pointer"></div></a>
+                                            </div>
+                                        </div>
+                                        </td>
+                                    <td>
+                                        @moreItems.Comment
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+
+                            }
+
+                        }
+
+                    }
+                </table>
+
+            }
+            <p>Monthly KPI : @Html.Action("DisplayMonthlyKPI", "Projects")</p>
+            <p>Quarterly KPI : @Html.Action("DisplayQuarterlyKPI", "Projects")</p>
+            <div class="ui-widget-content draggable4 prog circle"></div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-5">
+            @*Schedule goes here*@
+
+            <h3>Schedule:</h3>
+
+            <table id="schedule-table" class="table-bordered">
+                <tr>
+                    <th class="schedule">
+                        Project Managers
+                    </th>
+                    <th>
+                        M
+                    </th>
+                    <th>
+                        T
+                    </th>
+                    <th>
+                        O
+                    </th>
+                    <th>
+                        T
+                    </th>
+                    <th>
+                        F
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.ScheduleList)
+                {
+                    <tr>
+                        <td>
+                            @item.Projectmanagers.Name
+                            <input type="hidden" class="schedulePM" value="@item.ProjectmanagerId" />
+                        </td>
+                        @if (item.Monday == "full")
+                        {
+                            <td id="@("monday " + item.ProjectmanagerId)" class="monday dragcell ui-droppable status-full ui-droppable-disabled">
+                                <div class="full circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Monday == "am")
+                        {
+                            <td id="@("monday " + item.ProjectmanagerId)" class="monday dragcell ui-droppable status-am ui-droppable-disabled">
+                                <div class="am circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Monday == "pm")
+                        {
+                            <td id="@("monday " + item.ProjectmanagerId)" class="monday dragcell ui-droppable status-pm ui-droppable-disabled">
+                                <div class="pm circle disableButton"></div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td id="@("monday " + item.ProjectmanagerId)" class="monday dragcell"></td>
+                        }
+
+                        @if (item.Tuesday == "full")
+                        {
+                            <td id="@("tuesday " + item.ProjectmanagerId)" class="tuesday dragcell ui-droppable status-full ui-droppable-disabled">
+                                <div class="full circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Tuesday == "am")
+                        {
+                            <td id="@("tuesday " + item.ProjectmanagerId)" class="tuesday dragcell ui-droppable status-am ui-droppable-disabled">
+                                <div class="am circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Tuesday == "pm")
+                        {
+                            <td id="@("tuesday " + item.ProjectmanagerId)" class="tuesday dragcell ui-droppable status-pm ui-droppable-disabled">
+                                <div class="pm circle disableButton"></div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td id="@("tuesday " + item.ProjectmanagerId)" class="tuesday dragcell"></td>
+                        }
+
+                        @if (item.Wednesday == "full")
+                        {
+                            <td id="@("wednesday " + item.ProjectmanagerId)" class="wednesday dragcell ui-droppable status-full ui-droppable-disabled">
+                                <div class="full circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Wednesday == "am")
+                        {
+                            <td id="@("wednesday " + item.ProjectmanagerId)" class="wednesday dragcell ui-droppable status-am ui-droppable-disabled">
+                                <div class="am circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Wednesday == "pm")
+                        {
+                            <td id="@("wednesday " + item.ProjectmanagerId)" class="wednesday dragcell ui-droppable status-pm ui-droppable-disabled">
+                                <div class="pm circle disableButton"></div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td id="@("wednesday " + item.ProjectmanagerId)" class="wednesday dragcell"></td>
+                        }
+
+                        @if (item.Thursday == "full")
+                        {
+                            <td id="@("thursday " + item.ProjectmanagerId)" class="thursday dragcell ui-droppable status-full ui-droppable-disabled">
+                                <div class="full circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Thursday == "am")
+                        {
+                            <td id="@("thursday " + item.ProjectmanagerId)" class="thursday dragcell ui-droppable status-am ui-droppable-disabled">
+                                <div class="am circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Thursday == "pm")
+                        {
+                            <td id="@("thursday " + item.ProjectmanagerId)" class="thursday dragcell ui-droppable status-pm ui-droppable-disabled">
+                                <div class="pm circle disableButton"></div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td id="@("thursday " + item.ProjectmanagerId)" class="thursday dragcell"></td>
+                        }
+
+                        @if (item.Friday == "full")
+                        {
+                            <td id="@("friday " + item.ProjectmanagerId)" class="friday dragcell ui-droppable status-full ui-droppable-disabled">
+                                <div class="full circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Friday == "am")
+                        {
+                            <td id="@("friday " + item.ProjectmanagerId)" class="friday dragcell ui-droppable status-am ui-droppable-disabled">
+                                <div class="am circle disableButton"></div>
+                            </td>
+                        }
+                        else if (item.Friday == "pm")
+                        {
+                            <td id="@("friday " + item.ProjectmanagerId)" class="friday dragcell ui-droppable status-pm ui-droppable-disabled">
+                                <div class="pm circle disableButton"></div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td id="@("friday " + item.ProjectmanagerId)" class="friday dragcell"></td>
+                        }
+                    </tr>
+
+                }
+            </table>
+            <br />
+            <button id="scheduleButton" onclick="ClearSchedule()" class="btn btn-info" type="button">Clear schedule</button>
+        </div>
+        <div id="button-container" class="col-md-3">
+            <br /><br /><br />
+            <div class="ui-widget-content draggable full circle"></div>
+            <div class="ui-widget-content draggable2 am circle"></div>
+            <div class="ui-widget-content draggable3 pm circle"></div>
+        </div>
+        <div class="col-md-4">
+            <h3>Archive:</h3>
+
+            <table class="table-bordered">
+                <tr>
+                    <th>
+                        Project Manager
+                    </th>
+                    <th>
+                        GateKeeper
+                    </th>
+                    <th class="projectName">
+                        Project Name
+                    </th>
+                    <th>
+                        G4
+                    </th>
+                </tr>
+                @foreach (var item in Model.Archive)
+                {
+                    <tr>
+                        @if (item.GoldStar.StarActive)
+                        {
+                            <td onclick="GoldStar(@item.Id, 'true')" title="Click to toggle the gold star!" style="cursor: pointer">
+                                <span class="glyphicon glyphicon-star" style="color: yellow"></span>
+                                @item.Projectmanager.Name
+                            </td>
+                        }
+                        else
+                        {
+                            <td onclick="GoldStar(@item.Id, 'false')" title="Click to toggle the gold star!" style="cursor: pointer">
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                @item.Projectmanager.Name
+                            </td>
+                        }
+                        <td>
+                            @item.GateKeeper.Name
+                        </td>
+                        <td>
+                            @item.ProjectName
+                        </td>
+                        <td>
+                            @item.G4.ToString("MM/dd")
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    //Clear schedule button
+    var ClearSchedule = function() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("ClearSchedule", "Dashboard")",
+            success: function (result) {
+                alert("Schedule has been cleared successfully");
+                window.setTimeout(function () { location.reload() });
+            },
+            error: function (jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status === 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status === 500) {
+                    //msg = 'Internal Server Error [500]';
+                    msg = 'Schedule has been cleared successfully';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+                alert(msg);
+                location.reload();
+            }
+        })
+    };
+
+    //Goldstar toggle
+    var GoldStar = function (projectId, toggle) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GoldStar", "Dashboard")",
+            data: {
+                pId: projectId,
+                status: toggle
+            },
+            success: function (result) {
+                alert("Gold star status changed successfully");
+                window.setTimeout(function () { location.reload() });
+            },
+            error: function (jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status === 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status === 500) {
+                    //msg = 'Internal Server Error [500]';
+                    msg = 'Gold star status changed successfully';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+                alert(msg);
+                location.reload();
+            }
+        });
+    }
+</script>
+
+<style>
+    .white {
+        background-color: white;
+    }
+
+    .yellow {
+        background-color: yellow;
+    }
+
+</style>
+
+
+<div class="modal fade" id="DeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Click to Reschedule</h3>
+            </div>
+            <div class="modal-body">
+        <input type="text"id="newDate" class="datepicker" />
+                <div style="text-align:center;display:none" id="loaderDiv2">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-danger" onclick="ConfirmEdit()">Confirm</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<input type="hidden" id="hiddenProjectId" />
+<input type="hidden" id="hiddenIdName" />
+
+<style>
+    .ui-datepicker-calendar {
+        background-color: #4b4f50;
+        border-radius: 15px;
+        
+    }
+    a:hover, a:visited, a:link, a:active {
+        color: black;
+        text-decoration: none;
+    }
+    #newDate{
+        width:100%;
+    }
+    td:hover{
+        background-color:rgba(132, 128, 128, 0.05);
+    }
+  
+</style>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+
+<script>
+    /*Start script DeleteProject*/
+    var Edit = function (projectId,id) {
+
+        $("#hiddenProjectId").val(projectId);
+        $("#hiddenIdName").val(id);
+        $("#DeleteModal").modal('show');
+        $("#newDate").focus();
+        $(".datepicker").focus();
+
+
+    }
+
+
+
+    var ConfirmEdit = function () {
+
+        $("#loaderDiv2").show();
+
+        var projId = $("#hiddenProjectId").val();
+        var IdName = $("#hiddenIdName").val();
+        var newDate = $("#newDate").val();
+        $.ajax({
+
+            type: "POST",
+            url: "/Dashboard/editDate",
+            data: {
+                projectId: projId,
+                idName: IdName,
+                newDate: newDate
+            },
+            success: function (result) {
+
+                $("#" + IdName + "_" + projId).html(result)
+                $("#loaderDiv2").hide();
+                $("#DeleteModal").modal("hide");
+                window.setTimeout(function () { location.reload() })
+
+            }
+
+        })
+
+    }
+
+    $(document).ready(function () {
+        $('.datepicker').datepicker({
+            dateFormat: "yy/mm/dd",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "2017:2075",
+            minDate: '7d'
+
+        });
+    })
+    /*End script DeleteProject*/
+
+    function UpdateStatus(color, id) {
+            $.ajax({
+            type: 'GET',
+            url: '@Url.Action("UpdateStatuses","Projects")',
+            data: { id: id, status: color },
+            success: function (data) {
+                window.setTimeout(function () { location.reload() })
+            },
+            error: function (jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+                alert(msg);
+            }
+        });
+        return false;
+    }
+
+</script>
+}

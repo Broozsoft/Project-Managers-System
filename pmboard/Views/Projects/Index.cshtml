@@ -1,0 +1,325 @@
+﻿@model IEnumerable<pmboard.Models.Projects>
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GateKeeper)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Projectmanager)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FS)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.G0)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RDB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.G1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.R2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.G2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.R3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.R4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.G3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.R5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.R7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.R8)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.G4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.END)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr id="row_@item.Id" @((item.IsDeleted) ? "class=disable" : "")>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GateKeeper.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Projectmanager.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FS)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.G0)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RDB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.G1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.R2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.G2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.R3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.R4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.G3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.R5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.R7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.R8)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.G4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.END)
+        </td>
+        <td style="background: @Html.DisplayFor(modelItem => item.Status)">
+           
+        </td>
+       
+        <td>
+         @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+      
+    
+        <td><a href="#"  onclick="ConfirmDisable(@item.Id,'@item.IsDeleted.ToString().ToLower()')"><i id="disableBottun_@item.Id" class=" @((!item.IsDeleted) ? "fa fa-eye" : "fa fa-eye-slash")"></i> </a> </td>
+        <td>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-info fa fa-pencil-square-o" })</td>
+        <td><a href="#" class="btn btn-danger fa fa-trash" onclick="ConfirmDelete(@item.Id)"><i id="deleteBottun_@item.Id"></i> </a> </td>
+      
+    </tr>
+}
+</table>
+
+
+<input type="hidden" id="hiddenProjectId"/>
+
+ @*Start modal fade DisableProject*@
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title"id="tittleModal"></h3>
+            </div>
+            <div class="modal-body">
+                <h4 id="MessageModal"></h4>
+                @*<img src="~/Content/img_logo.gif" width="150" />*@
+                <div style="text-align:center;display:none" id="loaderDiv">
+                   
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DisableProject()">Confirm</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<style>
+    .disable {
+        background: #778899 !important;
+    }
+    .modal-header .close {
+        margin:0;
+        padding:0;
+        text-align:right;
+      
+    }
+    .modal-title {
+        text-align:left;
+    
+    }
+</style>
+
+@*End modal fade DisableProject*@
+
+
+
+@*Start modal fade DeleteProject*@
+<div class="modal fade" id="DeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Delete Project</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure ? You want to delet this. </h4>
+                @*<img src="~/Content/img_logo.gif" width="150" />*@
+                <div style="text-align:center;display:none" id="loaderDiv2">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-danger" onclick="DeleteProject()">Confirm</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+@*Start modal fade DeleteProject*@
+
+
+
+
+
+<script>
+    /*Start script DisableProject*/
+    var ConfirmDisable = function (projectId, isDeleted) {
+        if (isDeleted==='true') {
+            $("#tittleModal").html("Enable Project")
+            $("#MessageModal").html("Are you sure you want to enable this?")
+        }
+        else {
+            $("#tittleModal").html("Disable Project")
+            $("#MessageModal").html("Are you sure you want to Disable this?")
+        }
+        
+        $("#hiddenProjectId").val(projectId);
+        $("#myModal").modal('show');
+
+    }
+
+    var DisableProject = function () {
+
+        $("#loaderDiv").show();
+
+        var projId = $("#hiddenProjectId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/Projects/DisableProject",
+            data: { projectId: projId },
+            success: function (result) {
+                $("#loaderDiv").hide();
+                $("#myModal").modal("hide");
+               
+                $("#row_" + projId).toggleClass("disable")/*css('background', '#778899')*//*remove()*/;
+               
+                if (!result) {
+                    $("#disableBottun_" + projId).removeClass("fa fa-eye-slash").addClass("fa fa-eye");
+                }
+                else { $("#disableBottun_" + projId).removeClass("fa fa-eye").addClass("fa fa-eye-slash"); }
+                window.location.reload();
+               
+            }
+
+        })
+
+    }
+   /*End script DisableProject*/
+
+/*##############################################################################################################################*/
+    
+    /*Start script DeleteProject*/
+    var ConfirmDelete = function (projectId) {
+       
+        $("#hiddenProjectId").val(projectId);
+        $("#DeleteModal").modal('show');
+
+    }
+
+
+
+    var DeleteProject = function () {
+
+        $("#loaderDiv2").show();
+
+        var projId = $("#hiddenProjectId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/Projects/DeleteProject",
+            data: { projectId: projId },
+            success: function (result) {
+                $("#loaderDiv2").hide();
+                $("#DeleteModal").modal("hide");
+                $("#row_" + projId).remove();
+
+               
+
+            }
+
+        })
+
+    }
+
+    /*End script DeleteProject*/
+    
+</script>

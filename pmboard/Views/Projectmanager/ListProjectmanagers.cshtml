@@ -1,0 +1,32 @@
+﻿@model IEnumerable<pmboard.Models.Projectmanagers>
+
+@{
+    ViewBag.Title = "Projectmanagers";
+}
+
+<h2>ListProjectmanagers</h2>
+
+<p>
+    @Html.ActionLink("Add PM", "AddProjectmanager", "Projectmanager")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditProjectmanager", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "DeleteProjectmanager", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

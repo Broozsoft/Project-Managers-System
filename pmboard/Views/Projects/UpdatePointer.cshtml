@@ -1,0 +1,437 @@
+﻿
+
+<div id="loadData">
+    @model List<IGrouping<pmboard.Models.Categories, pmboard.Models.Projects>>
+
+    @{
+        ViewBag.Title = "UpdatePointer";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        DateTime validDate =DateTime.Now.Date;
+
+        List<string> GoalList = new List<string> { "FS", "G0", "RDB", "G1", "R2", "G2", "R3", "R4", "G3", "R5", "R7", "R8", "G4", "END" };
+    }
+
+    @if (Model.Count() == 0)
+    {
+        <h2>In order to display projects you need to have a project to display in the first place.</h2>
+        <p>@Html.ActionLink("Click here to add a project.", "Create", "Projects") </p>
+    }
+    else
+    {
+
+          <!-- Example DataTables Card-->
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-table"></i> List of all GateKeepers
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="UpdateProjects" width="100%" cellspacing="0">
+                        <thead>
+                            <tr class="info">
+
+                                <th>
+                                    Project Name
+                                </th>
+                                <th>
+                                    Project Manager
+                                </th>
+                                <th>
+                                    GateKeeper
+                                </th>
+                                <th class="dates">
+                                    FS
+                                </th>
+                                <th class="dates">
+                                    G0
+                                </th>
+                                <th class="dates">
+                                    RDB
+                                </th>
+                                <th class="dates">
+                                    G1
+                                </th>
+                                <th class="dates">
+                                    R2
+                                </th>
+                                <th class="dates">
+                                    G2
+                                </th>
+                                <th class="dates">
+                                    R3
+                                </th>
+                                <th class="dates">
+                                    R4
+                                </th>
+                                <th class="dates">
+                                    G3
+                                </th>
+                                <th class="dates">
+                                    R5
+                                </th>
+                                <th class="dates">
+                                    R7
+                                </th>
+                                <th class="dates">
+                                    R8
+                                </th>
+                                <th class="dates">
+                                    G4
+                                </th>
+                                <th class="dates">
+                                    END
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Comment
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                        {
+
+                            foreach (var moreItems in item)
+                            {
+                                int Pointer = GoalList.IndexOf(moreItems.ProgressString);
+                        <tr>
+                            <td>
+                                @moreItems.ProjectName
+                            </td>
+                            <td>
+                                @moreItems.Projectmanager.Name
+                            </td>
+                            <td>
+                                @moreItems.GateKeeper.Name
+                            </td>
+
+                            @if (moreItems.FS !=null && moreItems.FS.Value.Date >= validDate && GoalList.IndexOf("FS") > Pointer)
+                                    {
+                                    <td class="dates date @((GoalList.IndexOf("FS") == Pointer) ? "pointer" : "' '")" onclick="updatePointer('FS', @((moreItems.FS == null) ? "'" + @moreItems.FS.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "FS"})">@moreItems.FS.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.FS.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("FS") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.FS)
+                                    </td>
+                                    }
+                            @if (moreItems.G0 !=null && moreItems.G0.Value.Date >= validDate && GoalList.IndexOf("G0") > Pointer)
+                                    {
+                                    <td class="dates date @((GoalList.IndexOf("G0") == Pointer) ? "pointer" : "' '")" onclick="updatePointer('G0', @((moreItems.G0 == null) ? "'" + @moreItems.G0.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "G0"})">@moreItems.G0.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.G0.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("G0") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.G0)
+                                    </td>
+                                    }
+                            @if (moreItems.RDB != null && moreItems.RDB.Value.Date > validDate && GoalList.IndexOf("RDB") > Pointer)
+                                    {
+
+                                    <td class="dates date @((GoalList.IndexOf("RDB") == Pointer) ? "pointer" : "' '")" onclick="updatePointer('RDB', @((moreItems.RDB == null) ? "'" + @moreItems.RDB.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "RDB"})">@moreItems.RDB.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.RDB.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("RDB") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.RDB)
+                                    </td>
+                                    }
+                            @if (moreItems.G1!=null && moreItems.G1.Value.Date > validDate && GoalList.IndexOf("G1") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('G1', @((moreItems.G1 == null) ? "'" + @moreItems.G1.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "G1"})">@moreItems.G1.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.G1.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("G1") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.G1)
+                                    </td>
+                                    }
+
+                            @if (moreItems.R2!=null &&  moreItems.R2.Value.Date > validDate && GoalList.IndexOf("R2") > Pointer)
+                                    {
+                                    <td class="dates date @((GoalList.IndexOf("R2") == Pointer) ? "pointer" : "' '")" onclick="updatePointer('R2', @((moreItems.R2 == null) ? "'" + @moreItems.R2.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "R2"})">@moreItems.R2.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.R2.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("R2") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.R2)
+                                    </td>
+                                    }
+
+                            @if (moreItems.G2!=null && moreItems.G2.Date >= validDate && GoalList.IndexOf("G2") > Pointer)
+                                    {
+                                    <td class="dates date " onclick="updatePointer('G2', @((moreItems.G2 == null) ? "'" + @moreItems.G2.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "G2"})"> @moreItems.G2.ToString("MM/dd")</a>*@
+                                        @moreItems.G2.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("G2") == Pointer) ? "pointer" : "' '")">
+                                        @moreItems.G2.ToString("MM/dd")
+                                    </td>
+                                    }
+
+                            @if (moreItems.R3!=null && moreItems.R3.Value.Date > validDate && GoalList.IndexOf("R3") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('R3', @((moreItems.R3 == null) ? "'" + @moreItems.R3.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "R3"})">@moreItems.R3.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.R3.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("R3") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.R3)
+                                    </td>
+                                    }
+                            @if (moreItems.R4!=null && moreItems.R4.Value.Date > validDate && GoalList.IndexOf("R4") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('R4', @((moreItems.R4 == null) ? "'" + @moreItems.R4.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "R4"})">@moreItems.R4.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.R4.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled">
+                                        @string.Format("{0:MM/dd}", moreItems.R4)
+                                    </td>
+                                    }
+                            @if (moreItems.G3!=null && moreItems.G3.Value.Date > validDate && GoalList.IndexOf("G3") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('G3', @((moreItems.G3 == null) ? "'" + @moreItems.G3.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "G3"})">@moreItems.G3.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.G3.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("R4") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.G3)
+                                    </td>
+                                    }
+                            @if (moreItems.R5!=null && moreItems.R5.Value.Date > validDate && GoalList.IndexOf("R5") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('R5', @((moreItems.R5 == null) ? "'" + @moreItems.R5.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "R5"})">@moreItems.R5.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.R5.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("R5") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.R5)
+                                    </td>
+                                    }
+                            @if (moreItems.R7 !=null && moreItems.R7.Value.Date > validDate && GoalList.IndexOf("R7") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('R7', @((moreItems.R7 == null) ? "'" + @moreItems.R7.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "R7"})">@moreItems.R7.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.R7.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("R7") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.R7)
+                                    </td>
+                                    }
+                            @if (moreItems.R8!=null && moreItems.R8.Value.Date > validDate && GoalList.IndexOf("R8") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('R8', @((moreItems.R8 == null) ? "'" + @moreItems.R8.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "R8"})"> @moreItems.R8.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.R8.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("R8") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.R8)
+                                    </td>
+                                    }
+                            @if (moreItems.G4!=null&& moreItems.G4.Date > validDate && GoalList.IndexOf("G4") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('G4', @((moreItems.G4 == null) ? "'" + @moreItems.G4.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "G4"})"> @moreItems.G4.ToString("MM/dd")</a>*@
+                                        @moreItems.G4.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("G4") == Pointer) ? "pointer" : "' '")">
+                                        @moreItems.G4.ToString("MM/dd")
+                                    </td>
+                                    }
+                            @if (moreItems.END!=null && moreItems.END.Value.Date > validDate && GoalList.IndexOf("END") > Pointer)
+                                    {
+                                    <td class="dates date" onclick="updatePointer('END', @((moreItems.END == null) ? "'" + @moreItems.END.Value.ToString("yyyy/MM/dd") + "'" : "' '"),@moreItems.Id)">
+                                        @*<a href="@Url.Action("MovePointer","Projects", routeValues: new { id=moreItems.Id , goal= "END"})"> @moreItems.END.Value.ToString("MM/dd")</a>*@
+                                        @moreItems.END.Value.ToString("MM/dd")
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td class=" disabled @((GoalList.IndexOf("END") == Pointer) ? "pointer" : "' '")">
+                                        @string.Format("{0:MM/dd}", moreItems.END)
+                                    </td>
+                                    }
+                            <td style="background:@moreItems.Status" class="status-circle">
+                                <div class="tooltipp">
+
+                                    <span class="tooltiptext">
+                                        <a onclick="UpdateStatus('#81c784',@moreItems.Id)"> <div class="circle green-pointer"></div></a>
+                                            <a onclick="UpdateStatus('#fdd835',@moreItems.Id)"><div class="circle yellow-pointer" style="margin-top:-20px"></div></a>
+                                            <a onclick="UpdateStatus('#ff5252',@moreItems.Id)"><div class="circle red-pointer"></div></a>
+                                    </span>
+                                </div>
+
+                            </td>
+                            <td>
+                                @moreItems.Comment
+                            </td>
+                        </tr>
+                            }
+
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+
+
+    function updatePointer(goal, date, id) {
+                $('div.card-body').html("<div><img src='/Content/Preloader_11.gif' /></div>");
+            $.ajax({
+            type: 'GET',
+            url: '@Url.Action("MovePointer","Projects")',
+            data: { id: id, goal: goal },
+            success: function (data) {
+                $('div.card-body').fadeOut(800);
+                $('#loadData').hide();
+                $('#loadData').html(data);
+                $('#loadData').show(800);
+            },
+            error: function (jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+                alert(msg);
+            }
+        });
+        return false;
+    };
+
+   //window.onload = LoadData
+
+    function UpdateStatus(color, id) {
+        $('div.card-body').html("<div><img src='/Content/Preloader_11.gif' /></div>");
+            $.ajax({
+            type: 'GET',
+            url: '@Url.Action("UpdateStatuses","Projects")',
+            data: { id: id, status: color },
+            success: function (data) {
+                $('div.card-body').fadeOut(800);
+                $('#loadData').hide();
+                $('#loadData').html(data);
+                $('#loadData').show(800);
+            },
+            error: function (jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+                alert(msg);
+            }
+        });
+        return false;
+    }
+    function LoadData() {
+        alert("hi")
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdatePointerAjax")',
+            data: { id: '' },
+            success: function (data) {
+                $('#loadData').html(data);
+            },
+            error: function (jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+                alert(msg);
+            }
+        });
+        return false;
+    }
+
+
+
+</script>
+
+
+
+
+
